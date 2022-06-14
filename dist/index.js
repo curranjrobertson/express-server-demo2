@@ -31,7 +31,6 @@ app.use(checkSession);
 //     profile_picture: imageUrl
 //   });
 // }
-// writeUserData('andreawu', 'awu', 'myemail@me.com', 'myimageurl');
 /**
  * Register
  */
@@ -53,9 +52,8 @@ app.get('/', (req, res) => {
 // });
 app.get('/my-profile', async (req, res) => {
     console.log('get my profile');
-    const user_id = req.body.session.identity.id;
-    console.log(user_id);
-    const userDocument = myProfile(user_id);
+    const user_id = req.body.ory.id;
+    const userDocument = await myProfile(user_id);
     res.json(userDocument);
 });
 // app.get('/signup', async (req, res) => {

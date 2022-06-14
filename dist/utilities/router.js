@@ -13,22 +13,36 @@ const ory = new sdk.V0alpha2Api(new sdk.Configuration({
 /**
  * Checking the clients cookie for a valid session
  */
-export const checkSession = (req, res, next) => {
-    ory
-        .toSession(undefined, req.header('cookie'))
-        .then(({ data: session }) => {
-        console.log('session available');
-        console.log({
-            user_id: session.identity.id,
-            user_email: session.identity.traits.email
-        });
-        next(session.identity.id);
-    })
-        .catch((err) => {
-        console.log('session not available');
+export const checkSession = async (req, res, next) => {
+    try {
+        const session = await ory.toSession(undefined, req.header('cookie'));
+        req.body = {};
+        req.body.ory = session.data;
+        return next();
+    }
+    catch (err) {
+        console.log(err);
         res.status(500).json({
-            status: err.response.status,
-            message: err.message
+        // status: err.response.status,
+        // message: err.message
         });
-    });
+    }
+    // ory
+    //   .toSession(undefined, req.header('cookie'))
+    //   .then(({ data: session }) => {
+    //     console.log('session available');
+    //     console.log({
+    //       user_id: session.identity.id,
+    //       user_email: session.identity.traits.email
+    //     });
+    //     (req as any).body.ory = session;
+    //     return next();
+    //   })
+    //   .catch((err) => {
+    //     console.log('session not available');
+    //     res.status(500).json({
+    //       status: err.response.status,
+    //       message: err.message
+    //     });
+    //   });
 };
