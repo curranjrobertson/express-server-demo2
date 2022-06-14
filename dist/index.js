@@ -19,23 +19,6 @@ const app = express();
  */
 app.use(checkSession);
 /**
- * Create a user document in the database
- */
-//app.post('/signup', [createUserDoc]);
-// function writeUserData(userID, name, email, imageUrl) {
-//   const db = getDatabase();
-//   const reference = ref(db, 'users/' + userID);
-//   set(reference, {
-//     username: name,
-//     email: email,
-//     profile_picture: imageUrl
-//   });
-// }
-/**
- * Register
- */
-//app.post
-/**
  * Listening for traffic
  */
 app.listen(port, () => {
@@ -46,20 +29,21 @@ app.get('/', (req, res) => {
         page: 'home, authenticated'
     });
 });
-// app.get('/database', async (req, res) => {
-//   console.log(await getUsers());
-//   res.json({ message: 'database' });
-// });
+/**
+ * Get user information
+ */
 app.get('/my-profile', async (req, res) => {
     console.log('get my profile');
     const user_id = req.body.ory.id;
     const userDocument = await myProfile(user_id);
     res.json(userDocument);
-    await writeUserData(user_id);
 });
-// app.get('/signup', async (req, res) => {
-//   const lang = 'fr';
-//   const docs = await admin.firestore().collection('users').set();
-//   res = docs.docs[1].set(lang);
-//   console.log('Setting user');
-// });
+/**
+ * Register
+ */
+app.get('/signup', async (req, res) => {
+    const user_id = req.body.ory.id;
+    const newUser = await writeUserData(user_id);
+    console.log('new user is:', newUser);
+    res.json(newUser);
+});
