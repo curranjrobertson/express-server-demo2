@@ -5,7 +5,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import { checkSession } from './utilities/router.js';
-import { myProfile } from './utilities/database.js';
+import { myProfile, writeUserData } from './utilities/database.js';
 /**
  * Defining the port from the .env file
  */
@@ -55,6 +55,7 @@ app.get('/my-profile', async (req, res) => {
     const user_id = req.body.ory.id;
     const userDocument = await myProfile(user_id);
     res.json(userDocument);
+    await writeUserData(user_id);
 });
 // app.get('/signup', async (req, res) => {
 //   const lang = 'fr';
