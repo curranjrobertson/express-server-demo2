@@ -19,21 +19,6 @@ export async function myProfile(userId: string) {
   return; // userDoc.data();
 }
 
-// export async function writeUserData(userId: string) {
-//   if (userDoc == null) {
-//     //set user id to firebase
-//     console.log(userId);
-//     console.log(myProfile(userId));
-//     const userDoc = await admin.firestore().collection('users');
-//     userDoc.add({ user_id: userId });
-//     return;
-//   } else {
-//     //Error
-//     console.log('error');
-//     console.log(myProfile(userId));
-//   }
-// }
-
 // export async function deleteUserData(userId: string) {
 
 // }
