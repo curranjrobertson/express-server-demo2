@@ -3,7 +3,7 @@
  */
 import express, { Express } from 'express';
 import { checkSession } from './utilities/router.js';
-import { myProfile } from './utilities/database.js';
+import { myProfile, deleteUserData } from './utilities/database.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -45,4 +45,12 @@ app.get('/my-profile', async (req, res) => {
   console.log('user_id is', user_id);
   const userDocument = await myProfile(user_id);
   res.json(userDocument);
+});
+/**
+ * delete user
+ */
+app.get('/delete', async (req, res) => {
+  console.log('delete user');
+  await deleteUserData(req.body.ory.id);
+  res.json(req.body.ory.id);
 });

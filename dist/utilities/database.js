@@ -25,9 +25,6 @@ export async function deleteUserData(userId) {
     console.log(userDoc);
     const user = await admin.firestore().collection('users').doc().get();
     if (user == userDoc) {
-        admin
-            .firestore()
-            .collection('users')
-            .delete({ user_id: userId, name: iphone });
+        admin.firestore().collection('users').doc(userId).delete();
     }
 }
