@@ -1,6 +1,4 @@
 import sdk from '@ory/client';
-//import { getDatabase, ref, child, get } from 'firebase/database';
-//const dbRef = ref(getDatabase());
 /**
  * Instantiate Ory SDK for working with sessions
  */
@@ -23,26 +21,8 @@ export const checkSession = async (req, res, next) => {
     catch (err) {
         console.log(err);
         res.status(500).json({
-        // status: err.response.status,
-        // message: err.message
+            status: err.response.status,
+            message: err.message
         });
     }
-    // ory
-    //   .toSession(undefined, req.header('cookie'))
-    //   .then(({ data: session }) => {
-    //     console.log('session available');
-    //     console.log({
-    //       user_id: session.identity.id,
-    //       user_email: session.identity.traits.email
-    //     });
-    //     (req as any).body.ory = session;
-    //     return next();
-    //   })
-    //   .catch((err) => {
-    //     console.log('session not available');
-    //     res.status(500).json({
-    //       status: err.response.status,
-    //       message: err.message
-    //     });
-    //   });
 };

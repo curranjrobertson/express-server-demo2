@@ -2,10 +2,10 @@
  * Instantiating environment
  */
 import express from 'express';
-import dotenv from 'dotenv';
-dotenv.config();
 import { checkSession } from './utilities/router.js';
 import { myProfile } from './utilities/database.js';
+import dotenv from 'dotenv';
+dotenv.config();
 /**
  * Defining the port from the .env file
  */
@@ -24,6 +24,9 @@ app.use(checkSession);
 app.listen(port, () => {
     console.log(`rest api listening on port ${port}`);
 });
+/**
+ * home page
+ */
 app.get('/', (req, res) => {
     res.status(200).json({
         page: 'home, authenticated'
@@ -39,13 +42,3 @@ app.get('/my-profile', async (req, res) => {
     const userDocument = await myProfile(user_id);
     res.json(userDocument);
 });
-/**
- * Register
- */
-// app.get('/signup', async (req, res) => {
-//   const user_id = req.body.ory.id;
-//   console.log('user_id is', user_id);
-//   const newUser = await writeUserData(user_id);
-//   console.log('new user is:', newUser);
-//   res.json(newUser);
-// });
