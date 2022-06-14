@@ -30,7 +30,7 @@ export const checkSession = (
         user_id: session.identity.id,
         user_email: session.identity.traits.email
       });
-      next();
+      next(session.identity.id);
     })
     .catch((err) => {
       console.log('session not available');

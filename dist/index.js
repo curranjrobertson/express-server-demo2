@@ -53,7 +53,9 @@ app.get('/', (req, res) => {
 // });
 app.get('/my-profile', async (req, res) => {
     console.log('get my profile');
-    const userDocument = myProfile(req.body.session.identity.id);
+    const user_id = req.body.session.identity.id;
+    console.log(user_id);
+    const userDocument = myProfile(user_id);
     res.json(userDocument);
 });
 // app.get('/signup', async (req, res) => {
