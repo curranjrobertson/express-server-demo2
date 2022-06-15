@@ -22,10 +22,14 @@ export async function myProfile(userId: string) {
  * Delete a user
  */
 export async function deleteUserData(userId: string) {
-  const userDoc = await admin.firestore().collection('users').doc().get();
-  console.log(userDoc);
-  const user = await admin.firestore().collection('users').doc().get();
-  if (user == userDoc) {
-    admin.firestore().collection('users').doc(userId).delete();
+  const userDoc = await admin.firestore().collection('users').doc(userId).get();
+  console.log('userDoc:', userDoc);
+  // const user = await admin.firestore().collection('users').doc().get();
+  // console.log('user:', user);
+  if (userDoc !== undefined) {
+    await admin.firestore().collection('users').doc(userId).delete();
+    console.log('if');
+  } else {
+    console.log('else');
   }
 }
