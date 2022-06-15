@@ -11,16 +11,19 @@ export async function readUserData(userId) {
  * Write User to the database
  */
 export async function writeUserData(userId) {
-    const userDoc = await admin.firestore().collection('users').doc().get();
+    const userDoc = await admin.firestore().collection('users').doc(userId).get();
     console.log(userDoc);
     if (userDoc !== undefined) {
-        //set user id to firebase
         console.log('user ID', userId);
-        admin.firestore().collection('users').add({ user_id: userId });
+        const device_Name = 'Device Name';
+        await admin
+            .firestore()
+            .collection('users')
+            .doc(userId)
+            .set({ Device_Name: device_Name });
         return;
     }
     else {
-        //Error
         console.log('error');
     }
 }

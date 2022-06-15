@@ -16,8 +16,12 @@ export async function writeUserData(userId: string) {
   console.log(userDoc);
   if (userDoc !== undefined) {
     console.log('user ID', userId);
-    const deviceName = new Object();
-    await admin.firestore().collection('users').doc(userId).set(deviceName);
+    const device_Name = 'Device Name';
+    await admin
+      .firestore()
+      .collection('users')
+      .doc(userId)
+      .set({ Device_Name: device_Name });
     return;
   } else {
     console.log('error');
