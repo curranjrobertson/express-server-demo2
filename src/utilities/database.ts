@@ -12,15 +12,14 @@ export async function readUserData(userId: string) {
  * Write User to the database
  */
 export async function writeUserData(userId: string) {
-  const userDoc = await admin.firestore().collection('users').doc().get();
+  const userDoc = await admin.firestore().collection('users').doc(userId).get();
   console.log(userDoc);
   if (userDoc !== undefined) {
-    //set user id to firebase
     console.log('user ID', userId);
-    admin.firestore().collection('users').add({ user_id: userId });
+    const deviceName = new Object();
+    await admin.firestore().collection('users').doc(userId).set(deviceName);
     return;
   } else {
-    //Error
     console.log('error');
   }
 }

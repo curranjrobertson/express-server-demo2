@@ -1,8 +1,16 @@
 import { admin, adminInit } from '../config.js';
 adminInit();
-// Read the user's document form the database
-// Write a user to the database if they do not exist
-export async function myProfile(userId) {
+/**
+ * Read User from the database
+ */
+export async function readUserData(userId) {
+    const userDoc = await admin.firestore().collection('users').doc(userId).get();
+    console.log(userDoc);
+}
+/**
+ * Write User to the database
+ */
+export async function writeUserData(userId) {
     const userDoc = await admin.firestore().collection('users').doc().get();
     console.log(userDoc);
     if (userDoc !== undefined) {
@@ -15,10 +23,9 @@ export async function myProfile(userId) {
         //Error
         console.log('error');
     }
-    return; // userDoc.data();
 }
 /**
- * Delete a user
+ * Delete a user from the database
  */
 export async function deleteUserData(userId) {
     const userDoc = await admin.firestore().collection('users').doc(userId).get();

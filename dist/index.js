@@ -3,7 +3,7 @@
  */
 import express from 'express';
 import { checkSession } from './utilities/router.js';
-import { myProfile, deleteUserData } from './utilities/database.js';
+import { readUserData, writeUserData, deleteUserData } from './utilities/database.js';
 import dotenv from 'dotenv';
 dotenv.config();
 /**
@@ -33,19 +33,29 @@ app.get('/', (req, res) => {
     });
 });
 /**
- * Get user information
+ * Read User
  */
 app.get('/my-profile', async (req, res) => {
     console.log('get my profile');
     const user_id = req.body.ory.id;
     console.log('user_id is', user_id);
-    const userDocument = await myProfile(user_id);
+    const userDocument = await readUserData(user_id);
     res.json(userDocument);
 });
 /**
- * delete user
+ * Write User
  */
-app.get('/delete', async (req, res) => {
+app.get('/new-user', async (req, res) => {
+    console.log('new-user');
+    const user_id = req.body.ory.id;
+    console.log('user_id is', user_id);
+    const userDocument = await writeUserData(user_id);
+    res.json(userDocument);
+});
+/**
+ * Delete user
+ */
+app.get('/delete-user', async (req, res) => {
     console.log('delete user');
     await deleteUserData(req.body.ory.id);
     res.json(req.body.ory.id);
