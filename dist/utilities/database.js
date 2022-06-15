@@ -33,8 +33,6 @@ export async function writeUserData(userId) {
 export async function deleteUserData(userId) {
     const userDoc = await admin.firestore().collection('users').doc(userId).get();
     console.log('userDoc:', userDoc);
-    // const user = await admin.firestore().collection('users').doc().get();
-    // console.log('user:', user);
     if (userDoc !== undefined) {
         await admin.firestore().collection('users').doc(userId).delete();
         console.log('if');

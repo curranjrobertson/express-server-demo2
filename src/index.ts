@@ -32,6 +32,7 @@ app.use(checkSession);
 app.listen(port, () => {
   console.log(`rest api listening on port ${port}`);
 });
+
 /**
  * home page
  */
@@ -40,6 +41,7 @@ app.get('/', (req, res) => {
     page: 'home, authenticated'
   });
 });
+
 /**
  * Read User
  */
@@ -50,6 +52,7 @@ app.get('/my-profile', async (req, res) => {
   const userDocument = await readUserData(user_id);
   res.json(userDocument);
 });
+
 /**
  * Write User
  */
@@ -60,6 +63,7 @@ app.get('/new-user', async (req, res) => {
   const userDocument = await writeUserData(user_id);
   res.json(userDocument);
 });
+
 /**
  * Delete user
  */
