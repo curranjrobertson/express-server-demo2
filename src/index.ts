@@ -6,7 +6,8 @@ import { checkSession } from './utilities/router.js';
 import {
   readUserData,
   writeUserData,
-  deleteUserData
+  deleteUserData,
+  rememberDevice
 } from './utilities/database.js';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -54,21 +55,79 @@ app.get('/my-profile', async (req, res) => {
 });
 
 /**
- * Write User
+ * Create a new user in the database
  */
 app.get('/new-user', async (req, res) => {
-  console.log('new-user');
-  const user_id = req.body.ory.id;
-  console.log('user_id is', user_id);
-  const userDocument = await writeUserData(user_id);
-  res.json(userDocument);
+  try {
+    // get the user id from ory
+    const user_id = req.body.ory.id;
+    // get user document from the function writeUserData
+    const userDocument = await writeUserData(user_id);
+    // if there is already a user with the user id from ory
+    if (userDocument !== true) {
+      // throw error
+      throw new Error(`Unexpected error when creating user document`);
+    }
+    return (
+      res
+        // return a success message if a user has been created
+        .status(200)
+        .json({ message: 'User document created successfully' })
+    );
+  } catch (err) {
+    // return an error message if there is an error
+    return res.status(405).json({ message: err.message });
+  }
 });
 
 /**
  * Delete user
  */
 app.get('/delete-user', async (req, res) => {
-  console.log('delete user');
-  await deleteUserData(req.body.ory.id);
-  res.json(req.body.ory.id);
+  try {
+    // get the user id from ory
+    const user_id = req.body.ory.id;
+    // get user document from the function deleteUserData
+    const userDocument = await deleteUserData(user_id);
+    // if there is no user with the user id from ory
+    if (userDocument !== true) {
+      throw new Error(`Unexpected error when deleting user document`);
+    }
+    return (
+      res
+        .status(200)
+        // return a success message if a user has been deleted
+        .json({ message: 'User document deleted successfully' })
+    );
+  } catch (err) {
+    // return an error message if there is an error
+    return res.status(405).json({ message: err.message });
+  }
+});
+
+/**
+ * Remember Device
+ */
+
+app.get('/remember-device', async (req, res) => {
+  try {
+    // get the user id from ory
+    const user_id = req.body.ory.id;
+    // get user document from the function rememberDevice
+    const userDocument = await rememberDevice(user_id);
+    // if there is no user with the user id from ory
+    if (userDocument !== true) {
+      // return message that a new user was created because there was no user in the database with the ory id
+      res.status(200).json({ message: 'User document created successfully' });
+    }
+    return (
+      res
+        .status(200)
+        // return a success message if a device has been added to the user document
+        .json({ message: 'Device remembered successfully' })
+    );
+  } catch (err) {
+    // return an error message if there is an error
+    return res.status(405).json({ message: err.message });
+  }
 });
