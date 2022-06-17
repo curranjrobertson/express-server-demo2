@@ -108,7 +108,6 @@ app.get('/delete-user', async (req, res) => {
 /**
  * Remember Device
  */
-
 app.get('/remember-device', async (req, res) => {
   try {
     // get the user id from ory
