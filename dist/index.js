@@ -3,7 +3,7 @@
  */
 import express from 'express';
 import { checkSession } from './utilities/router.js';
-import { readUserData, writeUserData, deleteUserData, rememberDevice } from './utilities/database.js';
+import { readUserData, writeUserData, deleteUserData, rememberDevice, revokeSession } from './utilities/database.js';
 import dotenv from 'dotenv';
 dotenv.config();
 /**
@@ -107,6 +107,21 @@ app.get('/remember-device', async (req, res) => {
             .status(200)
             // return a success message if a device has been added to the user document
             .json({ message: 'Device remembered successfully' }));
+    }
+    catch (err) {
+        // return an error message if there is an error
+        return res.status(405).json({ message: err.message });
+    }
+});
+/**
+ * Revoke Session
+ */
+app.get('/revoke-session', async (req, res) => {
+    try {
+        // get the user id from ory
+        const user_id = req.body.ory.id;
+        const device_Name = 'device_Name';
+        await revokeSession(user_id, device_Name);
     }
     catch (err) {
         // return an error message if there is an error
