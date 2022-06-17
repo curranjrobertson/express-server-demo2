@@ -78,8 +78,10 @@ export async function rememberDevice(userId) {
     console.log('userDoc:', userDoc);
     // read data from the database user document
     const userDocData = userDoc.data();
+    // Define the device name
     const device_Name = 'Device Name';
     if (userDocData !== undefined) {
+        // update the user document
         await admin
             .firestore()
             .collection('users')
@@ -88,6 +90,7 @@ export async function rememberDevice(userId) {
         return true;
     }
     else {
+        // create a new user document in the database
         await admin
             .firestore()
             .collection('users')

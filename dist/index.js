@@ -101,7 +101,7 @@ app.get('/remember-device', async (req, res) => {
         // if there is no user with the user id from ory
         if (userDocument !== true) {
             // return message that a new user was created because there was no user in the database with the ory id
-            res.status(200).json({ message: 'User document created successfully' });
+            throw new Error(`User document not found. User has been created.`);
         }
         return (res
             .status(200)
