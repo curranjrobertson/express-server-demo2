@@ -108,10 +108,16 @@ export async function revokeSession(userId, device_Name) {
     console.log('userDoc:', userDoc);
     // read data from the database user document
     const userDocData = userDoc.data();
+    const FieldValue = await admin
+        .firestore()
+        .collection('users')
+        .doc(userId)
+        .get();
+    console.log('FieldValue:', FieldValue);
     // If there is a user document with the user id
     if (userDocData !== undefined) {
         // delete the user document
-        await admin.firestore().collection('users').doc(userId).delete(device_Name);
+        await FieldValue.delete();
         return true;
     }
     else {

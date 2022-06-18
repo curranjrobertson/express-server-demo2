@@ -1,4 +1,3 @@
-import { Precondition } from '@google-cloud/firestore';
 import { admin, adminInit } from '../config.js';
 adminInit();
 
@@ -116,7 +115,7 @@ export async function rememberDevice(userId: string) {
 /**
  * Revoke Session
  */
-export async function revokeSession(userId: string, device_Name: Precondition) {
+export async function revokeSession(userId: string, device_Name: string) {
   // get the user document from the database
   const userDoc = await admin.firestore().collection('users').doc(userId).get();
 
@@ -126,10 +125,16 @@ export async function revokeSession(userId: string, device_Name: Precondition) {
   // read data from the database user document
   const userDocData = userDoc.data();
 
+  const FieldValue = await admin
+    .firestore()
+    .collection('users')
+    .doc(userId)
+    .get();
+  console.log('FieldValue:', FieldValue);
   // If there is a user document with the user id
   if (userDocData !== undefined) {
     // delete the user document
-    await admin.firestore().collection('users').doc(userId).delete(device_Name);
+    await FieldValue.delete();
     return true;
   } else {
     // return error if the user document does not exist

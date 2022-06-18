@@ -6,6 +6,7 @@ import { checkSession } from './utilities/router.js';
 import { readUserData, writeUserData, deleteUserData, rememberDevice, revokeSession } from './utilities/database.js';
 import dotenv from 'dotenv';
 dotenv.config();
+console.log(':)');
 /**
  * Defining the port from the .env file
  */

@@ -12,6 +12,7 @@ import {
 } from './utilities/database.js';
 import dotenv from 'dotenv';
 dotenv.config();
+console.log(':)');
 
 /**
  * Defining the port from the .env file
