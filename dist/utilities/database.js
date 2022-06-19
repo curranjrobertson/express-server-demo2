@@ -1,5 +1,19 @@
+import { FieldValue } from '@google-cloud/firestore';
 import { admin, adminInit } from '../config.js';
 adminInit();
+// To Do: Clean up
+// import sdk from '@ory/client';
+/**
+ * Instantiate Ory SDK for working with sessions
+ */
+// const ory = new sdk.V0alpha2Api(
+//   new sdk.Configuration({
+//     basePath: '/.ory',
+//     baseOptions: {
+//       baseURL: 'http://localhost:4000'
+//     }
+//   })
+// );
 /**
  * Read User from the database
  *
@@ -23,6 +37,7 @@ export async function writeUserData(userId) {
     const userDoc = await admin.firestore().collection('users').doc(userId).get();
     // read data from the database user document
     const userDocData = userDoc.data();
+    const Full_Name = 'Full Name';
     // check if the user exists / the user document has any data
     if (userDocData === undefined) {
         // To Do: Remove this line later
@@ -32,7 +47,7 @@ export async function writeUserData(userId) {
             .firestore()
             .collection('users')
             .doc(userId)
-            .set({ Device_Name: device_Name });
+            .set({ Name: Full_Name, Device_Name: device_Name });
         // return true if the user document was created successfully
         return true;
     }
@@ -68,25 +83,25 @@ export async function deleteUserData(userId) {
 /**
  * Remember Device
  * @param {string} userId The Ory user id used as the document id of the user document in the database.
+ * @param {string} sessionId The session to remember.
+ * @param {string} deviceName The device name to associated with the session.
  * @returns {Promise<boolean>} Returns true if the user document was updated successfully.
  * @returns {Promise<boolean>} Returns nothing if the user document was created successfully.
  */
-export async function rememberDevice(userId) {
+export async function rememberDevice(userId, sessionId) {
     // get the user document from the database
     const userDoc = await admin.firestore().collection('users').doc(userId).get();
     //print the user document
     console.log('userDoc:', userDoc);
     // read data from the database user document
     const userDocData = userDoc.data();
-    // Define the device name
-    const device_Name = 'Device Name';
     if (userDocData !== undefined) {
         // update the user document
         await admin
             .firestore()
             .collection('users')
             .doc(userId)
-            .update({ Device_Name: device_Name });
+            .update({ devices: FieldValue.arrayUnion(sessionId) });
         return true;
     }
     else {
@@ -95,29 +110,34 @@ export async function rememberDevice(userId) {
             .firestore()
             .collection('users')
             .doc(userId)
-            .set({ Device_Name: device_Name });
+            .set({ devices: [sessionId] });
     }
 }
 /**
  * Revoke Session
  */
-export async function revokeSession(userId, device_Name) {
+export async function revokeSession(userId) {
     // get the user document from the database
     const userDoc = await admin.firestore().collection('users').doc(userId).get();
     // print the user document
-    console.log('userDoc:', userDoc);
+    // console.log('userDoc:', userDoc);
     // read data from the database user document
     const userDocData = userDoc.data();
-    const FieldValue = await admin
-        .firestore()
-        .collection('users')
-        .doc(userId)
-        .get();
-    console.log('FieldValue:', FieldValue);
+    const temporary_session_id = '';
+    // Revoke the session at ory cloud
+    // try {
+    //   await ory.revokeSession(temporary_session_id);
+    // } catch (err) {
+    //   console.log(err);
+    // }
     // If there is a user document with the user id
     if (userDocData !== undefined) {
-        // delete the user document
-        await FieldValue.delete();
+        // delete the field value
+        await admin
+            .firestore()
+            .collection('users')
+            .doc(userId)
+            .update({ devices: FieldValue.arrayRemove(temporary_session_id) });
         return true;
     }
     else {

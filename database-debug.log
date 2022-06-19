@@ -3,7 +3,7 @@ WARNING: Illegal reflective access by io.netty.util.internal.ReflectionUtil (fil
 WARNING: Please consider reporting this to the maintainers of io.netty.util.internal.ReflectionUtil
 WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
 WARNING: All illegal access operations will be denied in a future release
-11:39:51.932 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
-11:39:52.160 [main] INFO com.firebase.server.forge.App$ - Listening at localhost:9000
-11:40:10.356 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO com.firebase.core.namespace.NamespaceActor - express-server-demo-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 161ms, init: 0ms
-11:40:10.415 [NamespaceSystem-blocking-namespace-operation-dispatcher-7:express-server-demo-default-rtdb$784607493:] INFO com.firebase.core.namespace.StateManager - Namespace express-server-demo-default-rtdb status Active to Active
+10:40:21.160 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+10:40:21.396 [main] INFO com.firebase.server.forge.App$ - Listening at localhost:9000
+10:40:38.302 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO com.firebase.core.namespace.NamespaceActor - express-server-demo-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 187ms, init: 0ms
+10:40:38.387 [NamespaceSystem-blocking-namespace-operation-dispatcher-6:express-server-demo-default-rtdb$1411532055:] INFO com.firebase.core.namespace.StateManager - Namespace express-server-demo-default-rtdb status Active to Active
