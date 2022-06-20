@@ -146,7 +146,7 @@ export async function revokeSession(user_id: string) {
   // read data from the database user document
   const userDocData = userDoc.data();
 
-  const temporary_session_id = 'a0d70704-6030-4ea4-a34c-7aa138425585';
+  const temporary_session_id = 'd12ee9f2-8cda-4e95-b77c-4d771176ccd8';
 
   // Revoke the session at ory cloud
   try {
