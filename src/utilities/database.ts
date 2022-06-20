@@ -1,20 +1,21 @@
 import { FieldValue } from '@google-cloud/firestore';
 import { admin, adminInit } from '../config.js';
 adminInit();
-import axios from 'axios';
+//import axios from 'axios';
+// import { opendirSync } from 'fs';
 // To Do: Clean up
-// import sdk from '@ory/client';
+import sdk from '@ory/client';
 /**
  * Instantiate Ory SDK for working with sessions
  */
-// const ory = new sdk.V0alpha2Api(
-//   new sdk.Configuration({
-//     basePath: '/.ory',
-//     baseOptions: {
-//       baseURL: 'http://localhost:4000'
-//     }
-//   })
-// );
+const ory = new sdk.V0alpha2Api(
+  new sdk.Configuration({
+    basePath: '/.ory',
+    baseOptions: {
+      baseURL: 'http://localhost:4000'
+    }
+  })
+);
 
 /**
  * Read User from the database
@@ -131,7 +132,7 @@ export async function rememberDevice(userId: string, sessionId: string) {
 /**
  * Revoke Session
  */
-export async function revokeSession(user_id: string, session_id: string) {
+export async function revokeSession(user_id: string) {
   // get the user document from the database
   const userDoc = await admin
     .firestore()
@@ -145,17 +146,13 @@ export async function revokeSession(user_id: string, session_id: string) {
   // read data from the database user document
   const userDocData = userDoc.data();
 
-  // const temporary_session_id = 'a0d70704-6030-4ea4-a34c-7aa138425585';
+  const temporary_session_id = 'a0d70704-6030-4ea4-a34c-7aa138425585';
 
   // Revoke the session at ory cloud
   try {
-    await axios.delete(
-      'https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/admin/identities/' +
-        session_id +
-        '/sessions'
-    );
+    ory.revokeSession(temporary_session_id);
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 
   // If there is a user document with the user id
@@ -165,7 +162,7 @@ export async function revokeSession(user_id: string, session_id: string) {
       .firestore()
       .collection('users')
       .doc(user_id)
-      .update({ devices: FieldValue.arrayRemove(session_id) });
+      .update({ devices: FieldValue.arrayRemove(temporary_session_id) });
     return true;
   } else {
     // return error if the user document does not exist

@@ -152,7 +152,7 @@ app.get('/revoke-session', async (req, res) => {
     console.log(session_id);
 
     // get user document from the function revokeSession
-    const userDocument = await revokeSession(user_id, session_id);
+    const userDocument = await revokeSession(user_id);
 
     console.log(userDocument);
 
