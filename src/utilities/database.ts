@@ -132,7 +132,7 @@ export async function rememberDevice(userId: string, sessionId: string) {
 /**
  * Revoke Session
  */
-export async function revokeSession(user_id: string) {
+export async function revokeSession(user_id: string, session_id: string) {
   // get the user document from the database
   const userDoc = await admin
     .firestore()
@@ -146,11 +146,11 @@ export async function revokeSession(user_id: string) {
   // read data from the database user document
   const userDocData = userDoc.data();
 
-  const temporary_session_id = 'd12ee9f2-8cda-4e95-b77c-4d771176ccd8';
+  // const temporary_session_id = 'd12ee9f2-8cda-4e95-b77c-4d771176ccd8';
 
   // Revoke the session at ory cloud
   try {
-    ory.revokeSession(temporary_session_id);
+    ory.revokeSession(session_id);
   } catch (err) {
     console.log(err.message);
   }
@@ -162,7 +162,7 @@ export async function revokeSession(user_id: string) {
       .firestore()
       .collection('users')
       .doc(user_id)
-      .update({ devices: FieldValue.arrayRemove(temporary_session_id) });
+      .update({ devices: FieldValue.arrayRemove(session_id) });
     return true;
   } else {
     // return error if the user document does not exist
