@@ -3,7 +3,7 @@
  */
 import express from 'express';
 import { checkSession } from './utilities/router.js';
-import { readUserData, writeUserData, deleteUserData, rememberDevice, revokeSession } from './utilities/database.js';
+import { readUserData, writeUserData, deleteUserData, rememberDevice, revoke_session } from './utilities/database.js';
 import dotenv from 'dotenv';
 dotenv.config();
 console.log(':)');
@@ -25,6 +25,7 @@ app.use(checkSession);
 app.listen(port, () => {
     console.log(`rest api listening on port ${port}`);
 });
+console.log();
 /**
  * home page
  */
@@ -41,7 +42,8 @@ app.get('/my-profile', async (req, res) => {
     const user_id = req.body.ory.identity.id;
     console.log('user_id is', user_id);
     const userDocument = await readUserData(user_id);
-    res.json(userDocument);
+    console.log(userDocument);
+    res.json({ id: req.body.ory.identity.id, session: req.body.ory.id });
 });
 /**
  * Create a new user in the database
@@ -50,8 +52,10 @@ app.get('/new-user', async (req, res) => {
     try {
         // get the user id from ory
         const user_id = req.body.ory.identity.id;
+        // get the session id from ory
+        const session_id = req.body.ory.id;
         // get user document from the function writeUserData
-        const userDocument = await writeUserData(user_id);
+        const userDocument = await writeUserData(user_id, session_id);
         // if there is already a user with the user id from ory
         if (userDocument !== true) {
             // throw error
@@ -130,7 +134,7 @@ app.get('/revoke-session', async (req, res) => {
         console.log('device_Name is:');
         console.log(session_id);
         // get user document from the function revokeSession
-        const userDocument = await revokeSession(user_id, session_id);
+        const userDocument = await revoke_session(user_id, session_id);
         console.log(userDocument);
         // if there is no user with the user id from ory
         if (userDocument !== true) {

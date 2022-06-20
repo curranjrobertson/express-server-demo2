@@ -1,19 +1,20 @@
 import { FieldValue } from '@google-cloud/firestore';
 import { admin, adminInit } from '../config.js';
+import axios from 'axios';
 adminInit();
-//import axios from 'axios';
-// import { opendirSync } from 'fs';
-// To Do: Clean up
-import sdk from '@ory/client';
-/**
- * Instantiate Ory SDK for working with sessions
- */
-const ory = new sdk.V0alpha2Api(new sdk.Configuration({
-    basePath: '/.ory',
-    baseOptions: {
-        baseURL: 'http://localhost:4000'
-    }
-}));
+// // To Do: Clean up
+// import sdk from '@ory/client';
+// /**
+//  * Instantiate Ory SDK for working with sessions
+//  */
+// const ory = new sdk.V0alpha2Api(
+//   new sdk.Configuration({
+//     basePath: '/.ory',
+//     baseOptions: {
+//       baseURL: 'http://localhost:4000'
+//     }
+//   })
+// );
 /**
  * Read User from the database
  *
@@ -32,22 +33,20 @@ export async function readUserData(userId) {
  * @param {string} userId The Ory user id used as the document id of the user document in the database.
  * @returns {Promise<boolean>} Returns true if the user document was created successfully.
  */
-export async function writeUserData(userId) {
+export async function writeUserData(userId, session_id) {
     // get the user document from the database
     const userDoc = await admin.firestore().collection('users').doc(userId).get();
     // read data from the database user document
     const userDocData = userDoc.data();
-    const Full_Name = 'Full Name';
     // check if the user exists / the user document has any data
     if (userDocData === undefined) {
         // To Do: Remove this line later
-        const device_Name = 'Device Name';
         // create a new user document in the database
         await admin
             .firestore()
             .collection('users')
             .doc(userId)
-            .set({ Name: Full_Name, Device_Name: device_Name });
+            .set({ SessionID: session_id });
         // return true if the user document was created successfully
         return true;
     }
@@ -101,7 +100,7 @@ export async function rememberDevice(userId, sessionId) {
             .firestore()
             .collection('users')
             .doc(userId)
-            .update({ devices: FieldValue.arrayUnion(sessionId) });
+            .update({ SessionID: FieldValue.arrayUnion(sessionId) });
         return true;
     }
     else {
@@ -110,13 +109,13 @@ export async function rememberDevice(userId, sessionId) {
             .firestore()
             .collection('users')
             .doc(userId)
-            .set({ devices: [sessionId] });
+            .set({ SessionID: [sessionId] });
     }
 }
 /**
  * Revoke Session
  */
-export async function revokeSession(user_id, session_id) {
+export async function revoke_session(user_id, session_id) {
     // get the user document from the database
     const userDoc = await admin
         .firestore()
@@ -127,13 +126,17 @@ export async function revokeSession(user_id, session_id) {
     // console.log('userDoc:', userDoc);
     // read data from the database user document
     const userDocData = userDoc.data();
-    // const temporary_session_id = 'd12ee9f2-8cda-4e95-b77c-4d771176ccd8';
     // Revoke the session at ory cloud
     try {
-        ory.revokeSession(session_id);
+        const response = await axios.delete('http://localhost:4000/sessions/?id=' + session_id, {
+            headers: {
+                'X-Session-Token': session_id
+            }
+        });
+        response;
     }
     catch (err) {
-        console.log(err.message);
+        console.log(err);
     }
     // If there is a user document with the user id
     if (userDocData !== undefined) {
