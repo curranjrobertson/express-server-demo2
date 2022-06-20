@@ -1,6 +1,7 @@
 import { FieldValue } from '@google-cloud/firestore';
 import { admin, adminInit } from '../config.js';
 adminInit();
+import axios from 'axios';
 // To Do: Clean up
 // import sdk from '@ory/client';
 /**
@@ -116,28 +117,35 @@ export async function rememberDevice(userId, sessionId) {
 /**
  * Revoke Session
  */
-export async function revokeSession(userId) {
+export async function revokeSession(user_id, session_id) {
     // get the user document from the database
-    const userDoc = await admin.firestore().collection('users').doc(userId).get();
+    const userDoc = await admin
+        .firestore()
+        .collection('users')
+        .doc(user_id)
+        .get();
     // print the user document
     // console.log('userDoc:', userDoc);
     // read data from the database user document
     const userDocData = userDoc.data();
-    const temporary_session_id = '';
+    // const temporary_session_id = 'a0d70704-6030-4ea4-a34c-7aa138425585';
     // Revoke the session at ory cloud
-    // try {
-    //   await ory.revokeSession(temporary_session_id);
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+        await axios.delete('https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/admin/identities/' +
+            session_id +
+            '/sessions');
+    }
+    catch (err) {
+        console.log(err);
+    }
     // If there is a user document with the user id
     if (userDocData !== undefined) {
         // delete the field value
         await admin
             .firestore()
             .collection('users')
-            .doc(userId)
-            .update({ devices: FieldValue.arrayRemove(temporary_session_id) });
+            .doc(user_id)
+            .update({ devices: FieldValue.arrayRemove(session_id) });
         return true;
     }
     else {

@@ -130,7 +130,7 @@ app.get('/revoke-session', async (req, res) => {
         console.log('device_Name is:');
         console.log(session_id);
         // get user document from the function revokeSession
-        const userDocument = await revokeSession(user_id);
+        const userDocument = await revokeSession(user_id, session_id);
         console.log(userDocument);
         // if there is no user with the user id from ory
         if (userDocument !== true) {
