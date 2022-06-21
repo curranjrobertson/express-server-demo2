@@ -24,6 +24,7 @@ export const checkSession = async (
     const session = await ory.toSession(undefined, req.header('cookie'));
     req.body = {};
     req.body.ory = session.data;
+    req.body.ory.cookie = req.header('cookie');
     return next();
   } catch (err) {
     console.log(err);

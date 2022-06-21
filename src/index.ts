@@ -13,7 +13,6 @@ import {
 import dotenv from 'dotenv';
 
 dotenv.config();
-console.log(':)');
 
 /**
  * Defining the port from the .env file
@@ -56,7 +55,7 @@ app.get('/my-profile', async (req, res) => {
   console.log('user_id is', user_id);
   const userDocument = await readUserData(user_id);
   console.log(userDocument);
-  res.json({ id: req.body.ory.identity.id, session: req.body.ory.id });
+  res.json({ ory: req.body.ory });
 });
 
 /**
@@ -157,7 +156,11 @@ app.get('/revoke-session', async (req, res) => {
     console.log(session_id);
 
     // get user document from the function revokeSession
-    const userDocument = await revoke_session(user_id, session_id);
+    const userDocument = await revoke_session(
+      user_id,
+      session_id,
+      req.body.ory.cookie
+    );
 
     console.log(userDocument);
 

@@ -2,11 +2,11 @@ import { FieldValue } from '@google-cloud/firestore';
 import { admin, adminInit } from '../config.js';
 import axios from 'axios';
 adminInit();
-// // To Do: Clean up
+// To Do: Clean up
 // import sdk from '@ory/client';
-// /**
-//  * Instantiate Ory SDK for working with sessions
-//  */
+/**
+ * Instantiate Ory SDK for working with sessions
+ */
 // const ory = new sdk.V0alpha2Api(
 //   new sdk.Configuration({
 //     basePath: '/.ory',
@@ -115,7 +115,7 @@ export async function rememberDevice(userId, sessionId) {
 /**
  * Revoke Session
  */
-export async function revoke_session(user_id, session_id) {
+export async function revoke_session(user_id, session_id, cookie) {
     // get the user document from the database
     const userDoc = await admin
         .firestore()
@@ -128,9 +128,10 @@ export async function revoke_session(user_id, session_id) {
     const userDocData = userDoc.data();
     // Revoke the session at ory cloud
     try {
-        const response = await axios.delete('http://localhost:4000/sessions/?id=' + session_id, {
+        const response = await axios.delete('http://https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/' +
+            session_id, {
             headers: {
-                'X-Session-Token': session_id
+                Authorization: cookie
             }
         });
         response;

@@ -1,14 +1,13 @@
 import { FieldValue } from '@google-cloud/firestore';
 import { admin, adminInit } from '../config.js';
 import axios from 'axios';
-import { opendirSync } from 'fs';
 adminInit();
 
-// // To Do: Clean up
+// To Do: Clean up
 // import sdk from '@ory/client';
-// /**
-//  * Instantiate Ory SDK for working with sessions
-//  */
+/**
+ * Instantiate Ory SDK for working with sessions
+ */
 // const ory = new sdk.V0alpha2Api(
 //   new sdk.Configuration({
 //     basePath: '/.ory',
@@ -133,7 +132,11 @@ export async function rememberDevice(userId: string, sessionId: string) {
 /**
  * Revoke Session
  */
-export async function revoke_session(user_id: string, session_id: string) {
+export async function revoke_session(
+  user_id: string,
+  session_id: string,
+  cookie: { [key: string]: unknown }
+) {
   // get the user document from the database
   const userDoc = await admin
     .firestore()
@@ -150,10 +153,11 @@ export async function revoke_session(user_id: string, session_id: string) {
   // Revoke the session at ory cloud
   try {
     const response = await axios.delete(
-      'http://localhost:4000/sessions/?id=' + session_id,
+      'http://https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/' +
+        session_id,
       {
         headers: {
-          'X-Session-Token': session_id
+          Authorization: cookie
         }
       }
     );
