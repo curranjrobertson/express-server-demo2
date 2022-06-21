@@ -136,7 +136,7 @@ export async function revoke_session(user_id, session_id) {
         response;
     }
     catch (err) {
-        console.log(err);
+        console.log(err.response.data);
     }
     // If there is a user document with the user id
     if (userDocData !== undefined) {
