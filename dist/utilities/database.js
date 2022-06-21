@@ -129,30 +129,27 @@ export async function revoke_session(user_id, session_id, cookie) {
     // Revoke the session at ory cloud
     try {
         const response = await axios.delete('https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/admin/identities/d12ee9f2-8cda-4e95-b77c-4d771176ccd8/sessions', {
-            headers: {},
-            Authorization: 'Bearer add ory access token here'
+            headers: {
+                Authorization: 'Bearer add ory access token here'
+            }
         });
+        response;
     }
-    finally {
+    catch (err) {
+        console.log(err);
     }
-    ;
-    response;
-}
-try { }
-catch (err) {
-    console.log(err);
-}
-// If there is a user document with the user id
-if (userDocData !== undefined) {
-    // delete the field value
-    await admin
-        .firestore()
-        .collection('users')
-        .doc(user_id)
-        .update({ SessionID: FieldValue.arrayRemove(session_id) });
-    return true;
-}
-else {
-    // return error if the user document does not exist
-    throw new Error('User does not exist');
+    // If there is a user document with the user id
+    if (userDocData !== undefined) {
+        // delete the field value
+        await admin
+            .firestore()
+            .collection('users')
+            .doc(user_id)
+            .update({ SessionID: FieldValue.arrayRemove(session_id) });
+        return true;
+    }
+    else {
+        // return error if the user document does not exist
+        throw new Error('User does not exist');
+    }
 }

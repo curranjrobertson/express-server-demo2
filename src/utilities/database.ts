@@ -155,7 +155,7 @@ export async function revoke_session(
     const response = await axios.delete(
       'https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/admin/identities/d12ee9f2-8cda-4e95-b77c-4d771176ccd8/sessions',
       {
-        headers: {}
+        headers: {
           Authorization: 'Bearer add ory access token here'
         }
       }
