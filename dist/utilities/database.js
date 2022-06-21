@@ -128,12 +128,13 @@ export async function revoke_session(user_id, session_id, cookie) {
     const userDocData = userDoc.data();
     // Revoke the session at ory cloud
     try {
-        const response = await axios.delete('https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/admin/identities/d12ee9f2-8cda-4e95-b77c-4d771176ccd8/sessions', {
+        const response = await axios.delete('https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/' +
+            session_id, {
             headers: {
-                Authorization: 'Bearer add ory access token here'
+                Cookies: cookie
             }
         });
-        response;
+        console.log(response);
     }
     catch (err) {
         console.log(err);

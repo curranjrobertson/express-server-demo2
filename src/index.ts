@@ -53,6 +53,11 @@ app.get('/my-profile', async (req, res) => {
   console.log('get my profile');
   const user_id = req.body.ory.identity.id;
   console.log('user_id is', user_id);
+  const coockie = req.body.ory.cookie;
+  console.log('cookie is');
+  console.log(coockie);
+  const session_id = req.body.ory.id;
+  console.log('session_id is', session_id);
   const userDocument = await readUserData(user_id);
   console.log(userDocument);
   res.json({ ory: req.body.ory });
@@ -155,6 +160,11 @@ app.get('/revoke-session', async (req, res) => {
     console.log('device_Name is:');
     console.log(session_id);
 
+    const cookie = req.body.ory.cookie;
+    console.log('cookie is: ', cookie);
+
+    const doc = req.body.ory;
+    console.log('doc is: ', doc);
     // get user document from the function revokeSession
     const userDocument = await revoke_session(
       user_id,
