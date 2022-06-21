@@ -145,7 +145,7 @@ export async function revoke_session(user_id, session_id) {
             .firestore()
             .collection('users')
             .doc(user_id)
-            .update({ devices: FieldValue.arrayRemove(session_id) });
+            .update({ SessionID: FieldValue.arrayRemove(session_id) });
         return true;
     }
     else {

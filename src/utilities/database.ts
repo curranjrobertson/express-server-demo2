@@ -168,7 +168,7 @@ export async function revoke_session(user_id: string, session_id: string) {
       .firestore()
       .collection('users')
       .doc(user_id)
-      .update({ devices: FieldValue.arrayRemove(session_id) });
+      .update({ SessionID: FieldValue.arrayRemove(session_id) });
     return true;
   } else {
     // return error if the user document does not exist

@@ -1,10 +1,10 @@
 This is the Google Pub/Sub fake.
 Implementation may be incomplete or differ from the real system.
-Jun 20, 2022 9:25:20 AM com.google.cloud.pubsub.testing.v1.Main main
+Jun 21, 2022 9:37:16 AM com.google.cloud.pubsub.testing.v1.Main main
 INFO: IAM integration is disabled. IAM policy methods and ACL checks are not supported
-Jun 20, 2022 9:25:20 AM io.gapi.emulators.netty.NettyUtil applyJava7LongHostnameWorkaround
+Jun 21, 2022 9:37:16 AM io.gapi.emulators.netty.NettyUtil applyJava7LongHostnameWorkaround
 INFO: Unable to apply Java 7 long hostname workaround.
-Jun 20, 2022 9:25:25 AM com.google.cloud.pubsub.testing.v1.Main main
+Jun 21, 2022 9:37:21 AM com.google.cloud.pubsub.testing.v1.Main main
 INFO: Server started, listening on 8085
-Jun 20, 2022 9:25:26 AM io.gapi.emulators.grpc.GrpcServer$3 operationComplete
+Jun 21, 2022 9:37:21 AM io.gapi.emulators.grpc.GrpcServer$3 operationComplete
 INFO: Adding handler(s) to newly registered Channel.
