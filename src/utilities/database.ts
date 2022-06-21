@@ -1,6 +1,7 @@
 import { FieldValue } from '@google-cloud/firestore';
 import { admin, adminInit } from '../config.js';
 import axios from 'axios';
+import { opendirSync } from 'fs';
 adminInit();
 
 // // To Do: Clean up
@@ -158,7 +159,7 @@ export async function revoke_session(user_id: string, session_id: string) {
     );
     response;
   } catch (err) {
-    console.log(err);
+    console.log(err.response.data);
   }
 
   // If there is a user document with the user id
