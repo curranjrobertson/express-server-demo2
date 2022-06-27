@@ -128,10 +128,9 @@ export async function revoke_session(user_id, session_id, cookie) {
     const userDocData = userDoc.data();
     // Revoke the session at ory cloud
     try {
-        const response = await axios.delete('https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/' +
-            session_id, {
+        const response = await axios.delete('https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/f17485c4-b3f6-4745-8b65-9eda481c32d6', {
             headers: {
-                Cookies: cookie
+                Cookies: 'MTY1NjMxNzY4OHxpUkFYUDFDTHpYZVUxd01CLUtZRF92MFZma0VSQXNLRS0yY2libHltc2h6YklaSUVORjV3dE00b2JCVFo5OUJrY1dpSWdFZUZnSGVBV2dPR3VJYkFvU3JNM0dSY2Q4bHpNclZ3SEFQS3p2TmRuRmtBcGsyY0s5ZUxReExfTTRuTWlWd09IZkRKN0E9PXwrmbr6C6RED_3o2LVkCbqAtiBIYom7ZGG3Ox9BJiYPbw=='
             }
         });
         console.log(response);
