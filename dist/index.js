@@ -58,8 +58,11 @@ app.get('/new-user', async (req, res) => {
         const user_id = req.body.ory.identity.id;
         // get the session id from ory
         const session_id = req.body.ory.id;
+        // get the cookie from ory
+        const cookie = req.body.ory.cookie;
+        console.log('cookie is: ', cookie);
         // get user document from the function writeUserData
-        const userDocument = await writeUserData(user_id, session_id);
+        const userDocument = await writeUserData(user_id, session_id, cookie);
         // if there is already a user with the user id from ory
         if (userDocument !== true) {
             // throw error
@@ -132,17 +135,12 @@ app.get('/revoke-session', async (req, res) => {
         // get the user id from ory
         const user_id = req.body.ory.identity.id;
         console.log('user_id is', user_id);
-        // get the device name
-        // const device_Name = 'device_Name';
-        const session_id = req.body.ory.id;
-        console.log('device_Name is:');
-        console.log(session_id);
-        const cookie = req.body.ory.cookie;
-        console.log('cookie is: ', cookie);
         const doc = req.body.ory;
         console.log('doc is: ', doc);
+        // get the provided session id
+        const session_id = 'f17485c4-b3f6-4745-8b65-9eda481c32d6';
         // get user document from the function revokeSession
-        const userDocument = await revoke_session(user_id, session_id, req.body.ory.cookie);
+        const userDocument = await revoke_session(user_id, session_id);
         console.log(userDocument);
         // if there is no user with the user id from ory
         if (userDocument !== true) {

@@ -38,7 +38,8 @@ export async function readUserData(userId: string) {
  */
 export async function writeUserData(
   userId: string,
-  session_id: string
+  session_id: string,
+  cookie: string
 ): Promise<boolean> {
   // get the user document from the database
   const userDoc = await admin.firestore().collection('users').doc(userId).get();
@@ -55,7 +56,7 @@ export async function writeUserData(
       .firestore()
       .collection('users')
       .doc(userId)
-      .set({ SessionID: session_id });
+      .set({ Device_Name: [session_id, cookie] });
 
     // return true if the user document was created successfully
     return true;
@@ -132,11 +133,7 @@ export async function rememberDevice(userId: string, sessionId: string) {
 /**
  * Revoke Session
  */
-export async function revoke_session(
-  user_id: string,
-  session_id: string,
-  cookie: { [key: string]: unknown }
-) {
+export async function revoke_session(user_id: string, session_id: string) {
   // get the user document from the database
   const userDoc = await admin
     .firestore()
@@ -144,20 +141,18 @@ export async function revoke_session(
     .doc(user_id)
     .get();
 
-  // print the user document
-  // console.log('userDoc:', userDoc);
-
   // read data from the database user document
   const userDocData = userDoc.data();
-
+  const cookie =
+    '__cflb=0pg1SWgHKDdgYA3HpY8wNChoYjG8rVELbJn5Rkjm; csrf_token_aeb42241c16e44232eda365b7bccc9c8d0d9e9eac9cb2d20ac535c49edef06b2=7cMQdWYu8LA1JX1JZwV+MLHOJE0j+n7Szr/nEjHbpXQ=; ory_session_hardcoreramanujanqv58dlw7k3=MTY1NjMxNDY1NXxCdFk3Wld6NGYzZ2pTSUd3azAwdjR2c0hTTHMxcUZjMUpCVVlHSnJGT01LN0hfSWV0dk5NbklhNHJTUTBraVVSMzJ4SHo4STBsdWRqSC15M2xEYnRvMS1BSmc4eWFjQTJ1VGltcENYeWRQOElGUWZ1eW9vRkxzR0lOY0hqRC1KdXZueF9Bd19HbWc9PXxSln23KQ-wlcTOCt9ObICyVIdBoxA_uXhXvwpsmPMxfQ==';
   // Revoke the session at ory cloud
   try {
     const response = await axios.delete(
-      'https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/f17485c4-b3f6-4745-8b65-9eda481c32d6',
+      'https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/' +
+        session_id,
       {
         headers: {
-          Cookies:
-            'MTY1NjMxNzY4OHxpUkFYUDFDTHpYZVUxd01CLUtZRF92MFZma0VSQXNLRS0yY2libHltc2h6YklaSUVORjV3dE00b2JCVFo5OUJrY1dpSWdFZUZnSGVBV2dPR3VJYkFvU3JNM0dSY2Q4bHpNclZ3SEFQS3p2TmRuRmtBcGsyY0s5ZUxReExfTTRuTWlWd09IZkRKN0E9PXwrmbr6C6RED_3o2LVkCbqAtiBIYom7ZGG3Ox9BJiYPbw=='
+          Cookies: cookie
         }
       }
     );
