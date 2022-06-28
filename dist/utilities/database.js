@@ -115,7 +115,7 @@ export async function rememberDevice(userId, sessionId) {
 /**
  * Revoke Session
  */
-export async function revoke_session(user_id, session_id) {
+export async function revoke_session(user_id, session_id, cookie) {
     // get the user document from the database
     const userDoc = await admin
         .firestore()
@@ -124,7 +124,6 @@ export async function revoke_session(user_id, session_id) {
         .get();
     // read data from the database user document
     const userDocData = userDoc.data();
-    const cookie = '__cflb=0pg1SWgHKDdgYA3HpY8wNChoYjG8rVELbJn5Rkjm; csrf_token_aeb42241c16e44232eda365b7bccc9c8d0d9e9eac9cb2d20ac535c49edef06b2=7cMQdWYu8LA1JX1JZwV+MLHOJE0j+n7Szr/nEjHbpXQ=; ory_session_hardcoreramanujanqv58dlw7k3=MTY1NjMxNDY1NXxCdFk3Wld6NGYzZ2pTSUd3azAwdjR2c0hTTHMxcUZjMUpCVVlHSnJGT01LN0hfSWV0dk5NbklhNHJTUTBraVVSMzJ4SHo4STBsdWRqSC15M2xEYnRvMS1BSmc4eWFjQTJ1VGltcENYeWRQOElGUWZ1eW9vRkxzR0lOY0hqRC1KdXZueF9Bd19HbWc9PXxSln23KQ-wlcTOCt9ObICyVIdBoxA_uXhXvwpsmPMxfQ==';
     // Revoke the session at ory cloud
     try {
         const response = await axios.delete('https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/' +
