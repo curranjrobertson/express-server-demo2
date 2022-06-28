@@ -129,13 +129,14 @@ export async function revoke_session(user_id, session_id, cookie) {
         const response = await axios.delete('https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/' +
             session_id, {
             headers: {
-                Cookies: cookie
+                Cookie: cookie
             }
         });
-        console.log(response);
+        console.log(response.status);
     }
     catch (err) {
-        console.log(err);
+        // console.log(err);
+        console.log('Error status:' + err.response.status);
     }
     // If there is a user document with the user id
     if (userDocData !== undefined) {
@@ -144,7 +145,7 @@ export async function revoke_session(user_id, session_id, cookie) {
             .firestore()
             .collection('users')
             .doc(user_id)
-            .update({ SessionID: FieldValue.arrayRemove(session_id) });
+            .update({ Device_Name: FieldValue.arrayRemove(session_id) });
         return true;
     }
     else {

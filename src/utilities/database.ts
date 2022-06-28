@@ -154,13 +154,14 @@ export async function revoke_session(
         session_id,
       {
         headers: {
-          Cookies: cookie
+          Cookie: cookie
         }
       }
     );
-    console.log(response);
+    console.log(response.status);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
+    console.log('Error status:' + err.response.status);
   }
 
   // If there is a user document with the user id
@@ -170,7 +171,7 @@ export async function revoke_session(
       .firestore()
       .collection('users')
       .doc(user_id)
-      .update({ SessionID: FieldValue.arrayRemove(session_id) });
+      .update({ Device_Name: FieldValue.arrayRemove(session_id) });
     return true;
   } else {
     // return error if the user document does not exist

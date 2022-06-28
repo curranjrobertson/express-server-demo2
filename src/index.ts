@@ -161,9 +161,10 @@ app.get('/revoke-session', async (req, res) => {
     const doc = req.body.ory;
     console.log('doc is: ', doc);
     // get the provided session id
-    const session_id = 'f17485c4-b3f6-4745-8b65-9eda481c32d6';
+    const session_id = '2c9030e5-41ac-4775-ac06-0ae8fc398296';
     // get cookie from ory
     const cookie = req.body.ory.cookie;
+    console.log(cookie);
 
     // get user document from the function revokeSession
     const userDocument = await revoke_session(user_id, session_id, cookie);
