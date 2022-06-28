@@ -150,7 +150,7 @@ export async function revoke_session(
   // Revoke the session at ory cloud
   try {
     const response = await axios.delete(
-      'https://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/' +
+      'http://hardcore-ramanujan-qv58dlw7k3.projects.oryapis.com/sessions/' +
         session_id,
       {
         headers: {
