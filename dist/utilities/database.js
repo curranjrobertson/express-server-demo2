@@ -2,19 +2,6 @@ import { FieldValue } from '@google-cloud/firestore';
 import { admin, adminInit } from '../config.js';
 import axios from 'axios';
 adminInit();
-// To Do: Clean up
-// import sdk from '@ory/client';
-/**
- * Instantiate Ory SDK for working with sessions
- */
-// const ory = new sdk.V0alpha2Api(
-//   new sdk.Configuration({
-//     basePath: '/.ory',
-//     baseOptions: {
-//       baseURL: 'http://localhost:4000'
-//     }
-//   })
-// );
 /**
  * Read User from the database
  *
@@ -35,9 +22,15 @@ export async function readUserData(userId) {
  */
 export async function writeUserData(userId, session_id, cookie) {
     // get the user document from the database
-    const userDoc = await admin.firestore().collection('users').doc(userId).get();
+    const userDoc = await admin
+        .firestore()
+        .collection('users')
+        .doc(userId)
+        .doc(session_id)
+        .get();
     // read data from the database user document
     const userDocData = userDoc.data();
+    const meta_data = 'meta data';
     // check if the user exists / the user document has any data
     if (userDocData === undefined) {
         // To Do: Remove this line later
@@ -46,7 +39,7 @@ export async function writeUserData(userId, session_id, cookie) {
             .firestore()
             .collection('users')
             .doc(userId)
-            .set({ Device_Name: [session_id, cookie] });
+            .set({ Device_Name: [session_id, cookie, meta_data] });
         // return true if the user document was created successfully
         return true;
     }
@@ -114,6 +107,10 @@ export async function rememberDevice(userId, sessionId) {
 }
 /**
  * Revoke Session
+ * @param {string} user_id The Ory user id used as the document id of the user document in the database.
+ * @param {string} session_id The session to revoke.
+ * @param {string} cookie The cookie of the current session.
+ * @returns {Promise<boolean>} Returns true if the session was removed from the database.
  */
 export async function revoke_session(user_id, session_id, cookie) {
     // get the user document from the database

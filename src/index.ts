@@ -160,8 +160,10 @@ app.get('/revoke-session', async (req, res) => {
 
     const doc = req.body.ory;
     console.log('doc is: ', doc);
+
     // get the provided session id
     const session_id = '2c9030e5-41ac-4775-ac06-0ae8fc398296';
+
     // get cookie from ory
     const cookie = req.body.ory.cookie;
     console.log(cookie);

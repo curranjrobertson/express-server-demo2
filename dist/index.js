@@ -110,8 +110,10 @@ app.get('/remember-device', async (req, res) => {
         const user_id = req.body.ory.identity.id;
         // get the session id from ory
         const session_id = req.body.ory.id;
+        // get the cookie from ory
+        const cookie = req.body.ory.cookie;
         // get user document from the function rememberDevice
-        const userDocument = await rememberDevice(user_id, session_id);
+        const userDocument = await rememberDevice(user_id, session_id, cookie);
         // if there is no user with the user id from ory
         if (userDocument !== true) {
             // return message that a new user was created because there was no user in the database with the ory id
