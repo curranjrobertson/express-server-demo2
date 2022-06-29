@@ -1,5 +1,6 @@
 import admin from 'firebase-admin';
 const useEmulator = true;
+import functions from 'firebase-functions';
 
 if (useEmulator) {
   process.env['FIRESTORE_EMULATOR_HOST'] = 'localhost:8080';
@@ -15,6 +16,3 @@ const adminInit = () =>
   });
 
 export { admin, adminInit };
-
-// detabaseURL for using cloud storage
-// https://express-server-demo-default-rtdb.europe-west1.firebasedatabase.app'

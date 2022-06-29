@@ -9,5 +9,3 @@ const adminInit = () => admin.initializeApp({
     databaseURL: 'http://localhost:8080/?ns=express-server-demo'
 });
 export { admin, adminInit };
-// detabaseURL for using cloud storage
-// https://express-server-demo-default-rtdb.europe-west1.firebasedatabase.app'
