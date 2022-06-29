@@ -22,12 +22,7 @@ export async function readUserData(userId) {
  */
 export async function writeUserData(userId, session_id, cookie) {
     // get the user document from the database
-    const userDoc = await admin
-        .firestore()
-        .collection('users')
-        .doc(userId)
-        .doc(session_id)
-        .get();
+    const userDoc = await admin.firestore().collection('users').doc(userId).get();
     // read data from the database user document
     const userDocData = userDoc.data();
     const meta_data = 'meta data';
